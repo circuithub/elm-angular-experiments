@@ -1,7 +1,7 @@
 {
     "version": "0.1.0",
         "summary": "",
-        "repository": "",
+        "repository": "https://github.com/hanstolpo/elm-experiments.git",
         "license": "BSD3",
         "source-directories": [
             "."
