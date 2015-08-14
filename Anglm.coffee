@@ -1,26 +1,26 @@
 (angular.module "Anglm", [])
 .factory "Anglm", ["$log",  ($log) ->
 
-  makeActions: (spec) -> mkActions(spec)
+  makeActions: (spec, port=_.identity) -> mkActions(spec, ctx)
 ]
 
 $log = (angular.injector ['ng']).get '$log'
 
-mkActions = (s) ->
+mkActions = (s, ctx) ->
   if _.isArray s
    r = {}
    for ss in s
-    _.assign r, (mkAction ss)
+    _.assign r, (mkAction ss, ctx)
    return r
   else
-   return mkAction (s)
+   return (mkAction s, ctx)
 
-mkAction = (s) ->
-  a = _.compact [(action (s)), (actionN (s))]
+mkAction = (s, ctx) ->
+  a = _.compact [(action s), (actionN s)]
   if a.length isnt 1
     throw "Anglm.makeActions - ambiguity found "
   else
-    a[0]
+    return (ctx a[0])
 
 action = (s) ->
   if not (_.isEmpty (_.omit s, ["tag"])) or not s.tag?
