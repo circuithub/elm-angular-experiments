@@ -1,28 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="Rick Richardson <rick.richardson@gmail.com>">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Elm Bootstrap Template</title>
+    <title>Elm Experiments</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
 
-
-    <!-- <script src=zepto.min.js></script> -->
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script type="text/javascript" src="elm.js"></script>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/lodash/lodash.js"></script>
+    <script type="text/javascript" src="Anglm.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -32,8 +29,10 @@
   </head>
 
   <body>
-    <script type="text/javascript">
-        var app = Elm.fullscreen(Elm.Client, { initialLocation: window.location.hash.substring(2) });
-    </script>
+    <div class="angular-root" >
+      <p>Nothing here {{'yet' + '!'}}</p>
+    </div>
+    <div id="elm-root"> </div>
+    <script type="text/javascript" src="ElmEmbed.js"></script>
   </body>
 </html>
