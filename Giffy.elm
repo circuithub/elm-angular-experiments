@@ -8,7 +8,7 @@ import Http
 import Json.Decode as JsonD exposing (Decoder,(:=))
 import Json.Encode as JsonE
 import Task
-import Elmgular.Action as A exposing (action, AngularActions)
+import Elmgular.Action as A exposing (Angular)
 
 -- MODEL
 
@@ -31,8 +31,10 @@ type Action
     = RequestMore
     | NewGif (Maybe String)
 
-angularActions : AngularActions Action
-angularActions = action RequestMore "RequestMore"
+angularActions : Angular Action
+angularActions = A.merge [ A.make "RequestMore" RequestMore
+                         , A.make1 "NewGif" NewGif (A.maybe A.argumentString)
+                         ]
 
 update : Action -> Model -> (Model, Effects Action)
 update action model =
