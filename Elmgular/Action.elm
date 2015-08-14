@@ -16,15 +16,16 @@ module Elmgular.Action ( Angular
 import Json.Decode as D exposing (Decoder, (:=), andThen, succeed, fail, oneOf)
 import Json.Encode as E exposing (Value)
 import List as L exposing (map)
+import Debug exposing (log)
 
 type alias Angular a = (Decoder a, Value)
 
 make : String -> a -> Angular a
 make t v =
   let decoder = ("tag" := D.string) `andThen`
-                  \s -> case s of
-                    t -> succeed v
-                    _ -> fail ("unknown tag for Action : " ++ t)
+                  \s -> if s == t
+                          then succeed v
+                          else fail ("unknown tag for Action : " ++ t)
       spec = E.object [("tag", E.string t)]
   in (decoder, spec)
 
@@ -37,9 +38,9 @@ merge acts =
 wrap : String -> (a -> b) -> Angular a -> Angular b
 wrap t wrp inner =
   let decoder = ("tag" := D.string) `andThen`
-                  \s -> case s of
-                    t -> D.object1 wrp ("inner" := fst inner)
-                    _ -> fail ("unknown tag for Action : " ++ t)
+                  \s -> if t == s
+                    then D.object1 wrp ("inner" := fst inner)
+                    else fail ("unknown tag for Action : " ++ t)
       spec = E.object [("tag", E.string t), ("inner", snd inner)]
   in (decoder, spec)
 
@@ -50,9 +51,9 @@ make1 t mk arg1 =
   let d1 = snd arg1
       a1 = fst arg1 |> showArgumentTag
       decoder = ("tag" := D.string) `andThen`
-                  \s -> case s of
-                    t -> ("args" := D.tuple1 mk d1)
-                    _ -> fail ("unknown tag for Action : " ++ t)
+                  \s -> if t == s
+                    then ("args" := D.tuple1 mk d1)
+                    else fail ("unknown tag for Action : " ++ t)
       spec = E.object [ ("tag", E.string t)
                       , ("args", E.list [E.string a1])
                       ]
@@ -65,9 +66,9 @@ make2 t mk arg1 arg2 =
       d2 = snd arg2
       a2 = fst arg2 |> showArgumentTag
       decoder = ("tag" := D.string) `andThen`
-                  \s -> case s of
-                    t -> ("args" := D.tuple2 mk d1 d2)
-                    _ -> fail ("unknown tag for Action : " ++ t)
+                  \s -> if s == t
+                    then ("args" := D.tuple2 mk d1 d2)
+                    else fail ("unknown tag for Action : " ++ t)
       spec = E.object [ ("tag", E.string t)
                       , ("args", E.list [E.string a1, E.string a2])
                       ]
@@ -82,9 +83,9 @@ make3 t mk arg1 arg2 arg3 =
       d3 = snd arg3
       a3 = fst arg3 |> showArgumentTag
       decoder = ("tag" := D.string) `andThen`
-                  \s -> case s of
-                    t -> ("args" := D.tuple3 mk d1 d2 d3)
-                    _ -> fail ("unknown tag for Action : " ++ t)
+                  \s -> if t == s
+                    then ("args" := D.tuple3 mk d1 d2 d3)
+                    else fail ("unknown tag for Action : " ++ t)
       spec = E.object [ ("tag", E.string t)
                       , ("args", E.list [E.string a1, E.string a2, E.string a3])
                       ]
