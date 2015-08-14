@@ -1,7 +1,7 @@
 (angular.module "Anglm", [])
 .factory "Anglm", ["$log",  ($log) ->
 
-  makeActions: (spec, port=_.identity) -> mkActions(spec, ctx)
+  makeActions: (spec, port=_.identity) -> mkActions(spec, port)
 ]
 
 $log = (angular.injector ['ng']).get '$log'
@@ -16,23 +16,27 @@ mkActions = (s, ctx) ->
    return (mkAction s, ctx)
 
 mkAction = (s, ctx) ->
-  a = _.compact [(action s), (actionN s)]
+  a = _.compact [(action s, ctx), (actionN s, ctx)]
   if a.length isnt 1
     throw "Anglm.makeActions - ambiguity found "
   else
-    return (ctx a[0])
+    return a[0]
 
-action = (s) ->
+action = (s,ctx) ->
   if not (_.isEmpty (_.omit s, ["tag"])) or not s.tag?
     return null
   else
-    return  "#{s.tag}": () -> s
+    return  "#{s.tag}": () -> ctx s
 
-actionN = (s) ->
+actionN = (s, ctx) ->
   if not (_.isEmpty (_.omit s, ["tag","args"])) or not (s.tag? and s.args?)
     return null
   else
-    return "#{s.tag}": (a...) -> tag: s.tag; args: _.map (_.zip s.args, a), decodeArg;
+    return "#{s.tag}": (a...) ->
+      r =
+        tag: s.tag
+        args: (_.map (_.zip s.args, a), decodeArg)
+      return ctx r
 
 maybePfx = "ArgumentTagMaybe "
 decodeArg = ([argSpec, argValue]) ->

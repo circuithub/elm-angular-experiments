@@ -30,16 +30,16 @@ update' a m = case a of
   Nothing -> (m, Effects.none)
 
 
-main =
-  app.html
-
+main = app.html
 
 port tasks : Signal (Task.Task Never ())
-port tasks =
-  app.tasks
+port tasks = app.tasks
 
 port spec : Json.Value
 port spec = snd angularActions
+
+port model : Signal Model
+port model = app.model
 
 port actions : Signal (Json.Value)
 
