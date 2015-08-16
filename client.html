@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="Embed">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,6 +20,7 @@
     <script type="text/javascript" src="bower_components/angular/angular.js"></script>
     <script type="text/javascript" src="bower_components/lodash/lodash.js"></script>
     <script type="text/javascript" src="Anglm.js"></script>
+    <script type="text/javascript" src="ElmEmbed.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -29,10 +30,9 @@
   </head>
 
   <body>
-    <div class="angular-root" >
-      <p>Nothing here {{'yet' + '!'}}</p>
+    <div class="angular-root" ng-controller="embedElmCtrl">
+      <p>Nothing here {{message}}</p>
     </div>
-    <div id="elm-root"> </div>
-    <script type="text/javascript" src="ElmEmbed.js"></script>
+    <embed-elm> </embed-elm>
   </body>
 </html>
