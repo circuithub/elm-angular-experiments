@@ -40,6 +40,9 @@ actionN = (s, ctx) ->
 
 maybePfx = "ArgumentTagMaybe "
 decodeArg = ([argSpec, argValue]) ->
+  if not argSpec?
+    throw "Anglm.makeActions - argSpec is null"
+    return null
   if argSpec.slice(0,maybePfx.length) is maybePfx
     return if argValue? then decodeArg [(argSpec.slice(maybePfx.length)), argValue] else null
   if argSpec == "ArgumentTagInt"
