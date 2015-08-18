@@ -9,19 +9,26 @@ import Json.Decode as JsonD exposing (Decoder,(:=))
 import Json.Encode as JsonE
 import Task
 import Elmgular.Action as A exposing (Angular)
+import Elmgular.Html as A
 
 -- MODEL
 
+type alias Slide =
+  { image: String
+  , text: String
+  , active: Bool
+  }
+
 type alias Model =
     { topic : String
-    , gifUrl : String
+    , slides : List Slide
     , single : Bool
     }
 
 
 init : String -> (Model, Effects Action)
 init topic =
-  ( Model topic "assets/waiting.gif" False
+  ( Model topic [Slide "assets/waiting.gif" "" False] True
   , getRandomGif topic
   )
 
@@ -46,9 +53,11 @@ update action model =
       (model, getRandomGif model.topic)
 
     NewGif maybeUrl ->
-      ( Model model.topic (Maybe.withDefault model.gifUrl maybeUrl) model.single
-      , Effects.none
-      )
+      let newSlides = case (maybeUrl, model.single) of
+                    (Nothing, _) -> model.slides
+                    (Just url, True)  -> [Slide url "" False]
+                    (Just url, False) -> Slide url "" False :: model.slides
+      in ({model | slides <- newSlides}, Effects.none)
 
     SetSingle b -> ({model | single <- b}, Effects.none)
 
@@ -62,30 +71,33 @@ view : Signal.Address Action -> Model -> Html
 view address model =
   div [ style [ "width" => "200px" ] ]
     [ h2 [headerStyle] [text model.topic]
-    , div [imgStyle model.gifUrl] []
+    , div [imgStyle (List.head model.slides |> Maybe.withDefault (Slide "" "" False) |> .image)] []
     , button [ onClick address RequestMore ] [ text "More Please!" ]
-    , node "anglm-compile" []
-          [ pre [] [ text "{{elmModel.single + ' - ' + elmModel.gifUrl}}"]
-          , button [ type' "button"
-                   , class "btn btn-primary"
-                   , attribute "ng-model" "elmModel.single"
-                   , attribute "btn-checkbox" ""
-                   ] [ text "Toggle" ]
-          , node "anglm-react" [ attribute "elm-model" "elmModel.single"
-                               , attribute "elm-on-change" "elmActions.SetSingle"
-                               ] []
-          ]
-    , node "anglm-compile" []
-          [ pre [] [ text "{{elmModel.single + ' - ' + elmModel.gifUrl}}"]
-          , button [ type' "button"
-                   , class "btn btn-primary"
-                   , attribute "ng-model" "elmModel.single"
-                   , attribute "btn-checkbox" ""
-                   ] [ text "Toggle" ]
-          , node "anglm-react" [ attribute "elm-model" "elmModel.single"
-                               , attribute "elm-on-change" "elmActions.SetSingle"
-                               ] []
-          ]
+    , A.embed
+        [ node "carousel" [ attribute "interval" "5000"
+                          , attribute "no-wrap" "false"]
+            [ node "slide" [ attribute "ng-repeat" "slide in elmModel.slides"
+                           , attribute "active" "slide.active"
+                           ]
+                [ img [ attribute "ng-src" "{{slide.image}}"
+                      , style ["margin"=>"auto"]
+                      ] []
+                , div [class "carousel-caption"]
+                    [ h4 [] [text "Slide {{$index}}"]
+                    , p [] [text "{{slide.text}}"]
+                    ]
+                ]
+            ]
+        ]
+    , A.embed
+        [ pre [] [ text "{{elmModel.single + ' - ' + elmModel.slides}}"]
+        , button [ type' "button"
+                 , class "btn btn-primary"
+                 , attribute "ng-model" "elmModel.single"
+                 , attribute "btn-checkbox" ""
+                 ] [ text "Toggle" ]
+        , A.react "elmModel.single" "elmActions.SetSingle"
+        ]
     ]
 
 
