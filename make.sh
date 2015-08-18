@@ -1,1 +1,1 @@
-elm-make Client.elm; coffee -c *.coffee;
+elm-make App.elm; coffee -c *.coffee;

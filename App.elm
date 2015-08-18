@@ -1,4 +1,4 @@
-module Client where
+module App where
 import Effects exposing (Never, Effects)
 import Giffy exposing (init, update, view, angularActions, Action,Model)
 import StartApp
