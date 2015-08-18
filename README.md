@@ -13,6 +13,9 @@ Run It
 * run "bower install"
 * run "elm-package install"
 * run "./make.sh"
-* run "./make.sh"
 * run "elm-reactor"
 * browse to "http://localhost:8000/index.html"
+
+Or view it running
+------------------
+http://circuithub.github.io/elm-angular-experiments
