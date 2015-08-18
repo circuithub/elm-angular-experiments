@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="Embed">
+<html lang="en" ng-app="App", ng-controller="appCtrl">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,6 +20,7 @@
     <script type="text/javascript" src="bower_components/angular/angular.js"></script>
     <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script type="text/javascript" src="bower_components/lodash/lodash.js"></script>
+    <script type="text/javascript" src="App.js"></script>
     <script type="text/javascript" src="Anglm.js"></script>
     <script type="text/javascript" src="ElmEmbed.js"></script>
 
@@ -31,9 +32,9 @@
   </head>
 
   <body>
-    <div class="angular-root" ng-controller="embedElmCtrl">
+    <div class="angular-root">
       <p>Nothing here {{message}}</p>
     </div>
-    <embed-elm> </embed-elm>
+    <anglm-embed-actions elm-module="Client" ng-controller="embedCtrl" elm-actions="elmActions"> </anglm-embed-actions>
   </body>
 </html>

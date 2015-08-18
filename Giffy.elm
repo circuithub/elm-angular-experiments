@@ -64,27 +64,27 @@ view address model =
     [ h2 [headerStyle] [text model.topic]
     , div [imgStyle model.gifUrl] []
     , button [ onClick address RequestMore ] [ text "More Please!" ]
-    , node "elm-compile-angular" []
-          [ pre [] [ text "{{model.single + ' - ' + model.gifUrl}}"]
+    , node "anglm-compile" []
+          [ pre [] [ text "{{elmModel.single + ' - ' + elmModel.gifUrl}}"]
           , button [ type' "button"
                    , class "btn btn-primary"
-                   , attribute "ng-model" "model.single"
+                   , attribute "ng-model" "elmModel.single"
                    , attribute "btn-checkbox" ""
                    ] [ text "Toggle" ]
-          , node "elm-react" [ attribute "elm-model" "model.single"
-                             , attribute "elm-on-change" "actions.SetSingle"
-                             ] []
+          , node "anglm-react" [ attribute "elm-model" "elmModel.single"
+                               , attribute "elm-on-change" "elmActions.SetSingle"
+                               ] []
           ]
-    , node "elm-compile-angular" []
-          [ pre [] [ text "{{model.single + ' - ' + model.gifUrl}}"]
+    , node "anglm-compile" []
+          [ pre [] [ text "{{elmModel.single + ' - ' + elmModel.gifUrl}}"]
           , button [ type' "button"
                    , class "btn btn-primary"
-                   , attribute "ng-model" "model.single"
+                   , attribute "ng-model" "elmModel.single"
                    , attribute "btn-checkbox" ""
                    ] [ text "Toggle" ]
-          , node "elm-react" [ attribute "elm-model" "model.single"
-                             , attribute "elm-on-change" "actions.SetSingle"
-                             ] []
+          , node "anglm-react" [ attribute "elm-model" "elmModel.single"
+                               , attribute "elm-on-change" "elmActions.SetSingle"
+                               ] []
           ]
     ]
 

@@ -46,8 +46,9 @@ port actions : Signal (Json.Value)
 decodeAction : Json.Value -> Maybe Action
 decodeAction js = case decodeValue (fst angularActions |> Json.Decode.maybe) js of
                     Result.Ok v -> v
-                                |> Debug.log "success"
-                                |> Debug.log (Json.encode 0 js)
-                    Result.Err e -> Nothing
-                                 |> Debug.log ("error:" ++ e)
-                                 |> Debug.log (Json.encode 0 js)
+                    Result.Err e -> e
+                                 |> Debug.log "error decoding action"
+                                 |> always (Json.encode 0 js)
+                                 |> Debug.log "JSON was"
+                                 |> always Nothing
+
